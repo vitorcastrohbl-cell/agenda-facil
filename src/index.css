@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: 30 33% 97%;
-    --foreground: 20 20% 15%;
+    --background: 220 20% 97%;
+    --foreground: 224 30% 12%;
 
-    --card: 30 25% 99%;
-    --card-foreground: 20 20% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 30% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 20 20% 15%;
+    --popover-foreground: 224 30% 12%;
 
-    --primary: 16 80% 58%;
+    --primary: 252 80% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 30 30% 93%;
-    --secondary-foreground: 20 20% 20%;
+    --secondary: 230 25% 94%;
+    --secondary-foreground: 224 30% 18%;
 
-    --muted: 30 20% 94%;
-    --muted-foreground: 20 10% 50%;
+    --muted: 220 15% 92%;
+    --muted-foreground: 220 10% 46%;
 
-    --accent: 160 45% 45%;
+    --accent: 172 60% 42%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 30 20% 90%;
-    --input: 30 20% 88%;
-    --ring: 16 80% 58%;
+    --border: 220 15% 90%;
+    --input: 220 15% 88%;
+    --ring: 252 80% 60%;
 
     --radius: 0.75rem;
 
@@ -46,30 +46,31 @@
     --font-heading: 'Outfit', sans-serif;
     --font-body: 'Inter', sans-serif;
 
-    --shadow-card: 0 4px 24px -4px hsl(20 20% 15% / 0.06);
-    --shadow-elevated: 0 12px 40px -8px hsl(16 80% 58% / 0.15);
+    --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.04), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+    --shadow-elevated: 0 10px 40px -10px hsl(252 80% 60% / 0.2), 0 4px 16px -4px hsl(252 80% 60% / 0.1);
+    --shadow-glow: 0 0 60px -12px hsl(252 80% 60% / 0.25);
   }
 
   .dark {
-    --background: 20 15% 8%;
-    --foreground: 30 20% 95%;
-    --card: 20 15% 11%;
-    --card-foreground: 30 20% 95%;
-    --popover: 20 15% 11%;
-    --popover-foreground: 30 20% 95%;
-    --primary: 16 80% 58%;
+    --background: 224 30% 6%;
+    --foreground: 220 20% 95%;
+    --card: 224 25% 9%;
+    --card-foreground: 220 20% 95%;
+    --popover: 224 25% 9%;
+    --popover-foreground: 220 20% 95%;
+    --primary: 252 80% 65%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 20 15% 16%;
-    --secondary-foreground: 30 20% 90%;
-    --muted: 20 10% 18%;
-    --muted-foreground: 30 10% 60%;
-    --accent: 160 45% 45%;
+    --secondary: 224 20% 14%;
+    --secondary-foreground: 220 20% 90%;
+    --muted: 224 15% 16%;
+    --muted-foreground: 220 10% 55%;
+    --accent: 172 60% 48%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-    --border: 20 10% 20%;
-    --input: 20 10% 20%;
-    --ring: 16 80% 58%;
+    --border: 224 15% 16%;
+    --input: 224 15% 16%;
+    --ring: 252 80% 65%;
   }
 }
 
@@ -86,4 +87,74 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
   }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(252 80% 60%), hsl(280 80% 60%), hsl(172 60% 42%));
+  }
+
+  .bg-gradient-hero {
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, hsl(252 80% 60% / 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 50%, hsl(280 80% 60% / 0.08), transparent),
+      radial-gradient(ellipse 50% 30% at 20% 80%, hsl(172 60% 42% / 0.06), transparent);
+  }
+
+  .glass {
+    @apply bg-card/70 backdrop-blur-xl border border-white/10;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-delayed {
+    animation: float 6s ease-in-out infinite 2s;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .grid-pattern {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.4) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.4) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
 }
