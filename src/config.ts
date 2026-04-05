@@ -60,7 +60,7 @@ export const DEFAULT_CONFIG: BusinessConfig = {
     { name: "Mão e Pé", price: 180 },
     { name: "Postiça Realista", price: 50 },
     { name: "Esmaltação", price: 20 },
-    { name: "Spa dos Pés", price 80 },
+    { name: "Spa dos Pés", price: 80 },
   ],
   apptPassword: "agenda", 
   settingsPassword: "Vitor@2000",
