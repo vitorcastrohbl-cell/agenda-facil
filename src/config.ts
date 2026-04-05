@@ -57,7 +57,7 @@ export const DEFAULT_CONFIG: BusinessConfig = {
   services: [
     { name: "Mão", price: 35 },
     { name: "Pé", price: 35 },
-    { name: "Mão e Pé", price: 180 },
+    { name: "Mão e Pé", price: 80 },
     { name: "Postiça Realista", price: 50 },
     { name: "Esmaltação", price: 20 },
     { name: "Spa dos Pés", price: 80 },
@@ -65,8 +65,14 @@ export const DEFAULT_CONFIG: BusinessConfig = {
   apptPassword: "agenda", 
   settingsPassword: "Vitor@2000",
   openingTime: "08:00",
+  openingTime: "09:00",
+  openingTime: "10:00",
+  openingTime: "11:00",
   closingTime: "12:00",
   openingTime: "14:00",
+  openingTime: "15:00",
+  openingTime: "16:00",
+  openingTime: "17:00",
   closingTime: "18:00",
   slotDuration: 60,
   galleryImages: [
