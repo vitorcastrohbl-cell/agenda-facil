@@ -61,7 +61,7 @@ export const DEFAULT_CONFIG: BusinessConfig = {
     { name: "Massagem Relaxante", price: 150 },
   ],
   apptPassword: "agenda", 
-  settingsPassword: "mestre",
+  settingsPassword: "Vitor@2000",
   openingTime: "08:00",
   closingTime: "19:00",
   slotDuration: 30,

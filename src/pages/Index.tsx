@@ -31,6 +31,8 @@ import {
   MapPin,
   Check,
   ExternalLink,
+  Copy,
+  Save,
 } from "lucide-react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
@@ -109,7 +111,16 @@ function getStoredConfig(): BusinessConfig {
 }
 
 function saveStoredConfig(conf: BusinessConfig) {
-  localStorage.setItem(CONFIG_KEY, JSON.stringify(conf));
+  try {
+    localStorage.setItem(CONFIG_KEY, JSON.stringify(conf));
+  } catch (e) {
+    console.error("Erro ao salvar configuração:", e);
+    toast({
+      title: "Erro ao salvar",
+      description: "O espaço do navegador está cheio (comum com fotos grandes). Tente remover algumas fotos.",
+      variant: "destructive"
+    });
+  }
 }
 
 function dayLabel(dateStr: string): string {
@@ -139,6 +150,7 @@ const Index = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [selectedDay, setSelectedDay] = useState<Date>(new Date());
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   // Load config & initial appts
   useEffect(() => {
@@ -335,6 +347,48 @@ const Index = () => {
       toast({ title: "Logo atualizada!" });
     };
     reader.readAsDataURL(file);
+  };
+
+  const exportConfig = () => {
+    // Generate the TS format for the user to copy-paste
+    const configString = `export const DEFAULT_CONFIG: BusinessConfig = ${JSON.stringify(config, null, 2)};`;
+    navigator.clipboard.writeText(configString).then(() => {
+      toast({ 
+        title: "Configuração Copiada! 📋", 
+        description: "Cole este código por cima do DEFAULT_CONFIG no arquivo 'src/config.ts' para tornar as mudanças permanentes para o seu cliente." 
+      });
+    }).catch(() => {
+      toast({ title: "Erro ao copiar", variant: "destructive" });
+    });
+  };
+
+  const saveConfigToFile = async () => {
+    setIsSaving(true);
+    try {
+      const response = await fetch("/api/save-config", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(config),
+      });
+      
+      if (response.ok) {
+        toast({ 
+          title: "Salvo no Código! 🚀", 
+          description: "O arquivo 'src/config.ts' foi atualizado com sucesso e as mudanças agora são permanentes." 
+        });
+      } else {
+        throw new Error("Falha ao salvar");
+      }
+    } catch (error) {
+      console.error(error);
+      toast({ 
+        title: "Erro ao salvar", 
+        description: "Não foi possível salvar no arquivo local. Isso só funciona rodando localmente (npm run dev).",
+        variant: "destructive" 
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   // ── Filter day appointments (Admin) ──
@@ -868,6 +922,32 @@ const Index = () => {
                           ))}
                         </div>
                         <p className="text-[9px] text-muted-foreground uppercase text-center font-medium">Máximo de 8 fotos para melhor performance</p>
+                      </div>
+
+                      <div className="pt-8 border-t space-y-4">
+                        <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20">
+                          <h4 className="text-xs font-bold uppercase tracking-wider text-primary mb-2 flex items-center gap-2">
+                            <Sparkles className="h-3.5 w-3.5" /> Ferramenta de Entrega
+                          </h4>
+                          <p className="text-[11px] text-muted-foreground leading-relaxed mb-4">
+                            Use o botão abaixo para transformar suas mudanças visuais em código definitivo para o seu cliente. Depois de copiar, cole no arquivo <code className="text-primary font-bold">src/config.ts</code>.
+                          </p>
+                          <Button 
+                            onClick={saveConfigToFile} 
+                            disabled={isSaving}
+                            className="w-full h-11 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold gap-2 shadow-lg shadow-primary/20"
+                          >
+                            <Save className="h-4 w-4" /> 
+                            {isSaving ? "Salvando..." : "Salvar no Código (Definitivo)"}
+                          </Button>
+                          <Button 
+                            variant="ghost"
+                            onClick={exportConfig} 
+                            className="w-full h-9 rounded-xl text-muted-foreground text-[10px] hover:text-primary transition-colors"
+                          >
+                            <Copy className="h-3 w-3 mr-1" /> Ou copiar código manualmente
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </TabsContent>
